@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                                 http://www.springframework.org/schema/beans/spring-beans.xsd
+                                 http://www.springframework.org/schema/context
+                                 http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean id="quartzMenu" class="org.springframework.batch.admin.web.QuartzMenu" parent="baseMenu" />
+
+	<bean name="quartz" parent="standard">
+		<property name="attributes">
+			<props merge="true">
+				<prop key="body">/manager/quartz/html/quartz.ftl</prop>
+				<prop key="titleCode">quartz.title</prop>
+				<prop key="titleText">Spring Batch Admin: Quartz</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean name="quartz/job" parent="standard">
+		<property name="attributes">
+			<props merge="true">
+				<prop key="body">/manager/quartz/html/quartzJobDetail.ftl</prop>
+				<prop key="titleCode">quartz.job.title</prop>
+				<prop key="titleText">Spring Batch Admin: Quartz Job Scheduling</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean name="quartz/job.json" parent="standard.json">
+		<property name="attributes">
+			<props merge="true">
+				<prop key="body">/manager/quartz/html/quartzJobDetail.ftl</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="quartzController" class="org.springframework.batch.admin.web.QuartzController" />
+	
+	<bean id="quartzService" class="org.springframework.batch.admin.service.impl.QuartzServiceImpl"/>
+
+</beans>
