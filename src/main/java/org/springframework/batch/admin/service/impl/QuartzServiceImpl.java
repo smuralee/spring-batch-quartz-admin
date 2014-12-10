@@ -16,9 +16,12 @@
 
 package org.springframework.batch.admin.service.impl;
 
+import org.springframework.batch.admin.service.JobService;
 import org.springframework.batch.admin.service.QuartzService;
 import org.springframework.batch.admin.web.util.BatchAdminLogger;
+import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Implementation of the {@link QuartzService}
@@ -27,13 +30,38 @@ import org.springframework.batch.core.JobParameters;
  *
  */
 public class QuartzServiceImpl implements QuartzService {
+    
+    /**
+     * Job service instance
+     */
+    private final JobService jobService;
+    
+    
+    /**
+     * Parameterized constructor
+     */
+    @Autowired
+    public QuartzServiceImpl(JobService jobService) {
+        super();
+        this.jobService = jobService;
+    }
 
     /* (non-Javadoc)
-     * @see org.springframework.batch.admin.service.QuartzService#scheduleAndLaunchBatchJob(java.lang.String, java.lang.String, org.springframework.batch.core.JobParameters)
+     * @see org.springframework.batch.admin.service.QuartzService#scheduleBatchJob(java.lang.String, java.lang.String, org.springframework.batch.core.JobParameters)
      */
-    public void scheduleAndLaunchBatchJob(String jobName, String cronExpression, JobParameters jobParameters) {
+    public void scheduleBatchJob(String jobName, String cronExpression, JobParameters jobParameters) {
+        int count = jobService.countJobs();
+        BatchAdminLogger.getLogger().info("The count : "+count);
+        BatchAdminLogger.getLogger().info("Inside batch scheduling");
         
-        BatchAdminLogger.getLogger().info("The quartz batch job is scheduled"); 
     }
-    
+
+    /* (non-Javadoc)
+     * @see org.springframework.batch.admin.service.QuartzService#launchBatchJob(java.lang.String, org.springframework.batch.core.JobParameters)
+     */
+    public JobExecution launchBatchJob(String jobName, JobParameters jobParameters) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

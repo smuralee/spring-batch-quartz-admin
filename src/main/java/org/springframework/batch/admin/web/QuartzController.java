@@ -209,7 +209,9 @@ public class QuartzController {
             String params = quartzScheduleRequest.getQuartzJobParameters();
             JobParameters jobParameters = jobParametersExtractor.fromString(params);
             
-            quartzService.scheduleAndLaunchBatchJob(quartzJobName, quartzScheduleRequest.getCronExpression(), jobParameters);
+            // Scheduling the batch job
+            quartzService.scheduleBatchJob(quartzJobName, quartzScheduleRequest.getCronExpression(), jobParameters);
+            
         }
 
         // Scheduling the job using Quartz
@@ -226,5 +228,5 @@ public class QuartzController {
         // there's less of a pressing need for one (the browser history won't
         // contain the request).
     }
-
+    
 }
