@@ -16,8 +16,13 @@
 
 package org.springframework.batch.admin.web.util;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.springframework.batch.support.PropertiesConverter;
 
 /**
  * @author Suraj Muraleedharan
@@ -42,6 +47,29 @@ public final class Util {
             isValid = true;
         }
         return isValid;
+    }
+    
+    /**
+     * <p>
+     * Returns a map with the job parameters
+     * </p>
+     * 
+     * @param jobName
+     * @param params
+     * @return Map<String, Object>
+     */
+    public static  Map<String, Object> extractJobDataMap (String jobName, String params){
+        Map<String, Object> jobDataMap = new HashMap<String, Object>();
+        // Adding the job name
+        jobDataMap.put(Constants.JOB_NAME, jobName);
+        
+        Properties properties = PropertiesConverter.stringToProperties(params);
+        for(String propertyName : properties.stringPropertyNames()){
+            jobDataMap.put(propertyName, properties.getProperty(propertyName));
+        }
+        
+        
+        return jobDataMap;
     }
 
 }

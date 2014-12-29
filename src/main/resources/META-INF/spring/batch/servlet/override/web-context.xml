@@ -36,8 +36,16 @@
 		</property>
 	</bean>
 
+	<!-- Quartz controller -->
 	<bean id="quartzController" class="org.springframework.batch.admin.web.QuartzController" />
 	
+	<!-- Quartz service -->
 	<bean id="quartzService" class="org.springframework.batch.admin.service.impl.QuartzServiceImpl"/>
-
+	
+	<!-- Scheduler factory bean -->
+	<bean id="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"/> 
+	
+	<!-- Quartz job launcher bean -->
+	<bean id="joblauncher" class="org.springframework.batch.admin.web.JobLauncherDetails" scope="prototype"/> 
+	
 </beans>

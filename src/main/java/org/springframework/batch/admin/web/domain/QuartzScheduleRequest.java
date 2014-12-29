@@ -23,7 +23,7 @@ import java.io.Serializable;
  *
  */
 public class QuartzScheduleRequest implements Serializable {
-    
+
     /**
      * Default version ID
      */
@@ -33,53 +33,133 @@ public class QuartzScheduleRequest implements Serializable {
      * Stores the job name
      */
     private String quartzJobName;
-    
+
     /**
      * Stores the cron expression
      */
     private String cronExpression;
-    
+
     /**
      * Stores the job parameters
      */
     private String quartzJobParameters;
-    
+
     /**
      * @return the quartzJobName
      */
     public String getQuartzJobName() {
         return quartzJobName;
     }
+
     /**
-     * @param quartzJobName the quartzJobName to set
+     * @param quartzJobName
+     *            the quartzJobName to set
      */
     public void setQuartzJobName(String quartzJobName) {
         this.quartzJobName = quartzJobName;
     }
-    
+
     /**
      * @return the cronExpression
      */
     public String getCronExpression() {
         return cronExpression;
     }
+
     /**
-     * @param cronExpression the cronExpression to set
+     * @param cronExpression
+     *            the cronExpression to set
      */
     public void setCronExpression(String cronExpression) {
         this.cronExpression = cronExpression;
     }
-    
+
     /**
      * @return the quartzJobParameters
      */
     public String getQuartzJobParameters() {
         return quartzJobParameters;
     }
+
     /**
-     * @param quartzJobParameters the quartzJobParameters to set
+     * @param quartzJobParameters
+     *            the quartzJobParameters to set
      */
     public void setQuartzJobParameters(String quartzJobParameters) {
         this.quartzJobParameters = quartzJobParameters;
     }
+
+    /**
+     * Default constructor
+     */
+    public QuartzScheduleRequest() {
+    }
+
+    /**
+     * @param quartzJobName
+     * @param cronExpression
+     * @param quartzJobParameters
+     */
+    public QuartzScheduleRequest(String quartzJobName, String cronExpression, String quartzJobParameters) {
+        this.quartzJobName = quartzJobName;
+        this.cronExpression = cronExpression;
+        this.quartzJobParameters = quartzJobParameters;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((cronExpression == null) ? 0 : cronExpression.hashCode());
+        result = prime * result + ((quartzJobName == null) ? 0 : quartzJobName.hashCode());
+        result = prime * result + ((quartzJobParameters == null) ? 0 : quartzJobParameters.hashCode());
+        return result;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof QuartzScheduleRequest)) {
+            return false;
+        }
+        QuartzScheduleRequest other = (QuartzScheduleRequest) obj;
+        if (cronExpression == null) {
+            if (other.cronExpression != null) {
+                return false;
+            }
+        } else if (!cronExpression.equals(other.cronExpression)) {
+            return false;
+        }
+        if (quartzJobName == null) {
+            if (other.quartzJobName != null) {
+                return false;
+            }
+        } else if (!quartzJobName.equals(other.quartzJobName)) {
+            return false;
+        }
+        if (quartzJobParameters == null) {
+            if (other.quartzJobParameters != null) {
+                return false;
+            }
+        } else if (!quartzJobParameters.equals(other.quartzJobParameters)) {
+            return false;
+        }
+        return true;
+    }
+
 }

@@ -1,1 +1,2 @@
-SELECT NOW() FROM DUAL;
+DROP TABLE batch.batch_cron_details;
+CREATE TABLE batch.batch_cron_details ( CRON_INSTANCE_ID int(11) NOT NULL AUTO_INCREMENT, JOB_NAME varchar(45) NOT NULL, CRON_EXP varchar(45) NOT NULL, ADDED_TIME datetime NOT NULL, MODIFIED_TIME datetime NOT NULL, PRIMARY KEY (CRON_INSTANCE_ID), UNIQUE KEY JOB_NAME_UNIQUE (JOB_NAME)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='This table stores the details on the job and the cron expression associated with it.';

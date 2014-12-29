@@ -27,5 +27,14 @@ public final class Constants {
      */
     public static final String JOB_PARAMETERS_REGEX = "([\\w\\.-_\\)\\(]+=[^,\\n]*[,\\n])*([\\w\\.-_\\)\\(]+=[^,]*$)";
 
+    /**
+     * job name
+     */
+    public static final String JOB_NAME = "jobName";
+    
+    /**
+     * job run date
+     */
+    public static final String JOB_RUN_DATE = "jobRunDate";
 }
 

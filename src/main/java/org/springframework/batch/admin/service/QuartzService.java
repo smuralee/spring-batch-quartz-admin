@@ -16,8 +16,7 @@
 
 package org.springframework.batch.admin.service;
 
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobExecution;
+import java.util.Map;
 
 /**
  * Interface for general purpose monitoring of the Quartz scheduling of spring batch
@@ -34,18 +33,14 @@ public interface QuartzService {
      * 
      * @param jobName
      * @param cronExpression
-     * @param jobParameters
+     * @param jobDataMap
      */
-	public void scheduleBatchJob (String jobName, String cronExpression, JobParameters jobParameters);
+	void scheduleBatchJob (String jobName, String cronExpression, Map<String,Object> jobDataMap);
 	
 	/**
 	 * <p>
-	 * Launches the batch job for the providing name and job parameters
+	 * Re-initializes all the triggers for the quartz scheduler
 	 * </p>
-	 * 
-	 * @param jobName
-	 * @param jobParameters
-	 * @return JobExecution
 	 */
-	public JobExecution launchBatchJob (String jobName, JobParameters jobParameters);
+	void initializeQuartzTriggers();
 }

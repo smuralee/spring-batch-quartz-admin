@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.commons.lang.StringUtils;
@@ -33,7 +34,6 @@ import org.springframework.batch.admin.web.util.Constants;
 import org.springframework.batch.admin.web.util.Util;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
-import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.launch.NoSuchJobException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -207,10 +207,10 @@ public class QuartzController {
             
             // Fetching the parameters
             String params = quartzScheduleRequest.getQuartzJobParameters();
-            JobParameters jobParameters = jobParametersExtractor.fromString(params);
+            Map<String,Object> jobDataMap = Util.extractJobDataMap(quartzJobName, params);
             
             // Scheduling the batch job
-            quartzService.scheduleBatchJob(quartzJobName, quartzScheduleRequest.getCronExpression(), jobParameters);
+            quartzService.scheduleBatchJob(quartzJobName, quartzScheduleRequest.getCronExpression(), jobDataMap);
             
         }
 

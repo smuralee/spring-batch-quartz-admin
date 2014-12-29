@@ -16,12 +16,18 @@
 
 package org.springframework.batch.admin.service.impl;
 
-import org.springframework.batch.admin.service.JobService;
+import java.text.ParseException;
+import java.util.Map;
+
+import org.quartz.JobDetail;
+import org.quartz.Trigger;
 import org.springframework.batch.admin.service.QuartzService;
+import org.springframework.batch.admin.web.JobLauncherDetails;
 import org.springframework.batch.admin.web.util.BatchAdminLogger;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobParameters;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
+import org.springframework.scheduling.quartz.JobDetailFactoryBean;
+import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 /**
  * Implementation of the {@link QuartzService}
@@ -30,38 +36,66 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  */
 public class QuartzServiceImpl implements QuartzService {
-    
+
     /**
-     * Job service instance
+     * Scheduler instance
      */
-    private final JobService jobService;
-    
-    
+    private final SchedulerFactoryBean quartzScheduler;
+
     /**
      * Parameterized constructor
      */
     @Autowired
-    public QuartzServiceImpl(JobService jobService) {
+    public QuartzServiceImpl(SchedulerFactoryBean quartzScheduler) {
         super();
-        this.jobService = jobService;
+        this.quartzScheduler = quartzScheduler;
     }
 
-    /* (non-Javadoc)
-     * @see org.springframework.batch.admin.service.QuartzService#scheduleBatchJob(java.lang.String, java.lang.String, org.springframework.batch.core.JobParameters)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.springframework.batch.admin.service.QuartzService#scheduleBatchJob
+     * (java.lang.String, java.lang.String, Map<String,Object>)
      */
-    public void scheduleBatchJob(String jobName, String cronExpression, JobParameters jobParameters) {
-        int count = jobService.countJobs();
-        BatchAdminLogger.getLogger().info("The count : "+count);
-        BatchAdminLogger.getLogger().info("Inside batch scheduling");
-        
+    public void scheduleBatchJob(String jobName, String cronExpression, Map<String, Object> jobDataMap) {
+
+        JobDetailFactoryBean jobDetailFactoryBean = new JobDetailFactoryBean();
+        jobDetailFactoryBean.setJobClass(JobLauncherDetails.class);
+        jobDetailFactoryBean.setJobDataAsMap(jobDataMap);
+        jobDetailFactoryBean.setName(jobName);
+        jobDetailFactoryBean.setDurability(true);
+        jobDetailFactoryBean.afterPropertiesSet();
+        JobDetail jobDetail = (JobDetail) jobDetailFactoryBean.getObject();
+
+        CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
+        cronTriggerFactoryBean.setJobDetail(jobDetail);
+        cronTriggerFactoryBean.setName(jobName);
+        cronTriggerFactoryBean.setCronExpression(cronExpression);
+        try {
+            cronTriggerFactoryBean.afterPropertiesSet();
+        } catch (ParseException e) {
+            BatchAdminLogger.getLogger().error(e.getMessage(), e);
+        }
+        Trigger trigger = (Trigger) cronTriggerFactoryBean.getObject();
+
+        quartzScheduler.setJobDetails(new JobDetail[] { jobDetail });
+        quartzScheduler.setTriggers(new Trigger[] { trigger });
+        try {
+            quartzScheduler.afterPropertiesSet();
+        } catch (Exception e) {
+            BatchAdminLogger.getLogger().error(e.getMessage(), e);
+        }
+        quartzScheduler.start();
     }
 
-    /* (non-Javadoc)
-     * @see org.springframework.batch.admin.service.QuartzService#launchBatchJob(java.lang.String, org.springframework.batch.core.JobParameters)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.springframework.batch.admin.service.QuartzService#
+     * initializeQuartzTriggers()
      */
-    public JobExecution launchBatchJob(String jobName, JobParameters jobParameters) {
+    public void initializeQuartzTriggers() {
         // TODO Auto-generated method stub
-        return null;
     }
-
 }
