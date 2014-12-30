@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2010 the original author or authors.
+\\ * Copyright 2009-2010 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,5 +36,21 @@ public final class Constants {
      * job run date
      */
     public static final String JOB_RUN_DATE = "jobRunDate";
+    
+    /**
+     * Quartz group
+     */
+    public static final String QUARTZ_GROUP = "quartzGroup";
+
+    /**
+     * Quartz trigger name suffix
+     */
+    public static final String TRIGGER_SUFFIX = "QuartzTrigger";
+    
+    /**
+     * Bean names 
+     */
+    public static final String JOB_SERVICE_BEAN = "jobService";
+    public static final String JOB_DATASTORE_BEAN = "batchDataStore";
 }
 

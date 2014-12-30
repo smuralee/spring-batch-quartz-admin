@@ -35,6 +35,9 @@
 			</props>
 		</property>
 	</bean>
+	
+	<!-- Application context provider -->
+	<bean id="contextApplicationContextProvider" class="org.springframework.batch.admin.web.util.ApplicationContextProvider"/>
 
 	<!-- Quartz controller -->
 	<bean id="quartzController" class="org.springframework.batch.admin.web.QuartzController" />
@@ -45,7 +48,6 @@
 	<!-- Scheduler factory bean -->
 	<bean id="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"/> 
 	
-	<!-- Quartz job launcher bean -->
-	<bean id="joblauncher" class="org.springframework.batch.admin.web.JobLauncherDetails" scope="prototype"/> 
-	
+	<!-- Bean for storing the job data -->
+	<bean id="batchDataStore" class="org.springframework.batch.admin.web.domain.BatchJobDataStore"/>
 </beans>

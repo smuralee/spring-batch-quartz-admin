@@ -20,9 +20,12 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.batch.admin.service.JobService;
+import org.springframework.batch.admin.web.domain.BatchJobDataStore;
+import org.springframework.batch.admin.web.util.AppContext;
 import org.springframework.batch.admin.web.util.BatchAdminLogger;
 import org.springframework.batch.admin.web.util.Constants;
 import org.springframework.batch.core.JobParameters;
@@ -32,42 +35,32 @@ import org.springframework.batch.core.launch.NoSuchJobException;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.quartz.QuartzJobBean;
 
 /**
  * @author Suraj Muraleedharan
  *
  */
-public class JobLauncherDetails extends QuartzJobBean {
+public class JobLauncherDetails implements Job {
 
     /**
      * Job service instance
      */
-    private final JobService jobService;
+    private JobService jobService;
 
-    /**
-     * @param jobService
+    /* (non-Javadoc)
+     * @see org.quartz.Job#execute(org.quartz.JobExecutionContext)
      */
-    @Autowired
-    public JobLauncherDetails(JobService jobService) {
-        super();
-        this.jobService = jobService;
-    }
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        
+        jobService = (JobService) AppContext.getApplicationContext().getBean(Constants.JOB_SERVICE_BEAN);
+        
+        String jobName = context.getJobDetail().getKey().getName();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.springframework.scheduling.quartz.QuartzJobBean#executeInternal(org
-     * .quartz.JobExecutionContext)
-     */
-    @Override
-    protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
-
-        Map<String, Object> jobDataMap = context.getMergedJobDataMap();
-        String jobName = (String) jobDataMap.get(Constants.JOB_NAME);
+        BatchJobDataStore batchJobDataStore = (BatchJobDataStore) AppContext.getApplicationContext().getBean(Constants.JOB_DATASTORE_BEAN);
+        Map<String, Map<String, Object>> jobDataMapStore = batchJobDataStore.getJobDataMapStore();
+        Map<String, Object> jobDataMap = jobDataMapStore.get(jobName);
         JobParameters jobParameters = getJobParametersFromJobMap(jobDataMap);
+        
         try {
             jobService.launch(jobName, jobParameters);
         } catch (NoSuchJobException e) {
@@ -81,6 +74,8 @@ public class JobLauncherDetails extends QuartzJobBean {
         } catch (JobParametersInvalidException e) {
             BatchAdminLogger.getLogger().error(e.getMessage(), e);
         }
+        
+       
 
     }
 
@@ -113,4 +108,5 @@ public class JobLauncherDetails extends QuartzJobBean {
 
     }
 
+    
 }

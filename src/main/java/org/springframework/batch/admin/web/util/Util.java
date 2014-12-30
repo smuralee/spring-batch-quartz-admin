@@ -68,8 +68,23 @@ public final class Util {
             jobDataMap.put(propertyName, properties.getProperty(propertyName));
         }
         
-        
         return jobDataMap;
+    }
+    
+    /**
+     * 
+     * <p>
+     * Returns the jobName appended by the trigger name suffix
+     * </p>
+     * 
+     * @param jobName
+     * @return
+     */
+    public static String getTriggerName (String jobName){
+        StringBuffer sb = new StringBuffer();
+        sb.append(jobName);
+        sb.append(Constants.TRIGGER_SUFFIX);
+        return sb.toString();
     }
 
 }

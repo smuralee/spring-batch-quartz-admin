@@ -16,17 +16,23 @@
 
 package org.springframework.batch.admin.service.impl;
 
-import java.text.ParseException;
 import java.util.Map;
 
+import org.quartz.CronScheduleBuilder;
+import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
+import org.quartz.JobKey;
+import org.quartz.SchedulerException;
 import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
 import org.springframework.batch.admin.service.QuartzService;
 import org.springframework.batch.admin.web.JobLauncherDetails;
+import org.springframework.batch.admin.web.domain.BatchJobDataStore;
+import org.springframework.batch.admin.web.util.AppContext;
 import org.springframework.batch.admin.web.util.BatchAdminLogger;
+import org.springframework.batch.admin.web.util.Constants;
+import org.springframework.batch.admin.web.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
-import org.springframework.scheduling.quartz.JobDetailFactoryBean;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 /**
@@ -60,33 +66,30 @@ public class QuartzServiceImpl implements QuartzService {
      */
     public void scheduleBatchJob(String jobName, String cronExpression, Map<String, Object> jobDataMap) {
 
-        JobDetailFactoryBean jobDetailFactoryBean = new JobDetailFactoryBean();
-        jobDetailFactoryBean.setJobClass(JobLauncherDetails.class);
-        jobDetailFactoryBean.setJobDataAsMap(jobDataMap);
-        jobDetailFactoryBean.setName(jobName);
-        jobDetailFactoryBean.setDurability(true);
-        jobDetailFactoryBean.afterPropertiesSet();
-        JobDetail jobDetail = (JobDetail) jobDetailFactoryBean.getObject();
+        JobKey jobKey = new JobKey(jobName, Constants.QUARTZ_GROUP);
+        JobDetail jobDetail = JobBuilder.newJob(JobLauncherDetails.class).withIdentity(jobName, Constants.QUARTZ_GROUP).build();
 
-        CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
-        cronTriggerFactoryBean.setJobDetail(jobDetail);
-        cronTriggerFactoryBean.setName(jobName);
-        cronTriggerFactoryBean.setCronExpression(cronExpression);
+        Trigger trigger = TriggerBuilder.newTrigger().withIdentity(Util.getTriggerName(jobName), Constants.QUARTZ_GROUP).withSchedule(CronScheduleBuilder.cronSchedule(cronExpression)).build();
+
+        // Storing the details
+        BatchJobDataStore batchJobDataStore = (BatchJobDataStore) AppContext.getApplicationContext().getBean(Constants.JOB_DATASTORE_BEAN);
+        Map<String, Map<String, Object>> jobDataMapStore = batchJobDataStore.getJobDataMapStore();
+        jobDataMapStore.put(jobName, jobDataMap);
+
         try {
-            cronTriggerFactoryBean.afterPropertiesSet();
-        } catch (ParseException e) {
+
+            // Delete job, if existing
+            if (quartzScheduler.getScheduler().checkExists(jobKey)) {
+                quartzScheduler.getScheduler().deleteJob(jobKey);
+            }
+            
+            // Schedule job
+            quartzScheduler.getScheduler().scheduleJob(jobDetail, trigger);
+            
+            BatchAdminLogger.getLogger().info("Job is scheduled");
+        } catch (SchedulerException e) {
             BatchAdminLogger.getLogger().error(e.getMessage(), e);
         }
-        Trigger trigger = (Trigger) cronTriggerFactoryBean.getObject();
-
-        quartzScheduler.setJobDetails(new JobDetail[] { jobDetail });
-        quartzScheduler.setTriggers(new Trigger[] { trigger });
-        try {
-            quartzScheduler.afterPropertiesSet();
-        } catch (Exception e) {
-            BatchAdminLogger.getLogger().error(e.getMessage(), e);
-        }
-        quartzScheduler.start();
     }
 
     /*
