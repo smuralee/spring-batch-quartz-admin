@@ -18,6 +18,12 @@
 			</input>
 			</li>
 		</ol>
+
+                <ol>
+                    <li>
+                        <b>Example:</b> An expression to create a trigger that simply fires every 5 minutes <b>0 0/5 * * * ?</b>
+                    </li>
+                </ol>
 		
 		<ol>
 			<li>

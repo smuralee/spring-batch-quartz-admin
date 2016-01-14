@@ -92,13 +92,4 @@ public class QuartzServiceImpl implements QuartzService {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.springframework.batch.admin.service.QuartzService#
-     * initializeQuartzTriggers()
-     */
-    public void initializeQuartzTriggers() {
-        // TODO Auto-generated method stub
-    }
-}
+ }

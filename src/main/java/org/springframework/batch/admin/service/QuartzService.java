@@ -37,10 +37,4 @@ public interface QuartzService {
      */
 	void scheduleBatchJob (String jobName, String cronExpression, Map<String,Object> jobDataMap);
 	
-	/**
-	 * <p>
-	 * Re-initializes all the triggers for the quartz scheduler
-	 * </p>
-	 */
-	void initializeQuartzTriggers();
 }
