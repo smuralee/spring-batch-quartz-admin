@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.batch.admin.service.impl;
 
 import java.util.Map;
@@ -37,7 +36,7 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 /**
  * Implementation of the {@link QuartzService}
- * 
+ *
  * @author Suraj Muraleedharan
  *
  */
@@ -82,14 +81,14 @@ public class QuartzServiceImpl implements QuartzService {
             if (quartzScheduler.getScheduler().checkExists(jobKey)) {
                 quartzScheduler.getScheduler().deleteJob(jobKey);
             }
-            
+
             // Schedule job
             quartzScheduler.getScheduler().scheduleJob(jobDetail, trigger);
-            
+
             BatchAdminLogger.getLogger().info("Job is scheduled");
         } catch (SchedulerException e) {
             BatchAdminLogger.getLogger().error(e.getMessage(), e);
         }
     }
 
- }
+}

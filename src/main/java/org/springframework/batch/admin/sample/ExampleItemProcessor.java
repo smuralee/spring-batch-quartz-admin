@@ -20,7 +20,7 @@ import org.springframework.batch.item.ItemProcessor;
 /**
  * Dummy {@link ItemProcessor} which only logs data it receives.
  */
-public class ExampleItemProcessor implements ItemProcessor<Object, Object>{
+public class ExampleItemProcessor implements ItemProcessor<Object, Object> {
 
     /**
      * @see ItemProcessor#process(Object)

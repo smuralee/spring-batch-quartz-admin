@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.batch.admin.service;
 
 import java.util.Map;
 
 /**
- * Interface for general purpose monitoring of the Quartz scheduling of spring batch
- * 
+ * Interface for general purpose monitoring of the Quartz scheduling of spring
+ * batch
+ *
  * @author Suraj Muraleedharan
  *
  */
@@ -30,11 +30,11 @@ public interface QuartzService {
      * <p>
      * Schedules the batch job as per the cron expression
      * </p>
-     * 
+     *
      * @param jobName
      * @param cronExpression
      * @param jobDataMap
      */
-	void scheduleBatchJob (String jobName, String cronExpression, Map<String,Object> jobDataMap);
-	
+    void scheduleBatchJob(String jobName, String cronExpression, Map<String, Object> jobDataMap);
+
 }

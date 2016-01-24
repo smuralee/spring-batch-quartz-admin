@@ -25,20 +25,20 @@ import org.springframework.batch.item.ItemWriter;
  */
 public class ExampleItemWriter implements ItemWriter<Object> {
 
-	private boolean fail = false;
-	
-	public void setFail(boolean fail) {
-		this.fail = fail;
-	}
+    private boolean fail = false;
 
-	/**
-	 * @see ItemWriter#write(List)
-	 */
-	public void write(List<? extends Object> data) throws Exception {
-		BatchAdminLogger.getLogger().info(data.toString());
-		if (fail ) {
-			throw new RuntimeException("Planned failure");
-		}
-	}
+    public void setFail(boolean fail) {
+        this.fail = fail;
+    }
+
+    /**
+     * @see ItemWriter#write(List)
+     */
+    public void write(List<? extends Object> data) throws Exception {
+        BatchAdminLogger.getLogger().info(data.toString());
+        if (fail) {
+            throw new RuntimeException("Planned failure");
+        }
+    }
 
 }

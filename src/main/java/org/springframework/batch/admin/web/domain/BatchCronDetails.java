@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.batch.admin.web.domain;
 
 import java.io.Serializable;
@@ -63,8 +62,7 @@ public class BatchCronDetails implements Serializable {
     }
 
     /**
-     * @param cronInstanceID
-     *            the cronInstanceID to set
+     * @param cronInstanceID the cronInstanceID to set
      */
     public void setCronInstanceID(Integer cronInstanceID) {
         this.cronInstanceID = cronInstanceID;
@@ -78,8 +76,7 @@ public class BatchCronDetails implements Serializable {
     }
 
     /**
-     * @param jobName
-     *            the jobName to set
+     * @param jobName the jobName to set
      */
     public void setJobName(String jobName) {
         this.jobName = jobName;
@@ -93,8 +90,7 @@ public class BatchCronDetails implements Serializable {
     }
 
     /**
-     * @param cronExp
-     *            the cronExp to set
+     * @param cronExp the cronExp to set
      */
     public void setCronExp(String cronExp) {
         this.cronExp = cronExp;
@@ -108,8 +104,7 @@ public class BatchCronDetails implements Serializable {
     }
 
     /**
-     * @param addedTime
-     *            the addedTime to set
+     * @param addedTime the addedTime to set
      */
     public void setAddedTime(Timestamp addedTime) {
         this.addedTime = addedTime;
@@ -123,8 +118,7 @@ public class BatchCronDetails implements Serializable {
     }
 
     /**
-     * @param modifiedTime
-     *            the modifiedTime to set
+     * @param modifiedTime the modifiedTime to set
      */
     public void setModifiedTime(Timestamp modifiedTime) {
         this.modifiedTime = modifiedTime;

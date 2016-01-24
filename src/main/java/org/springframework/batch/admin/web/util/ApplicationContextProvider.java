@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.batch.admin.web.util;
 
 import org.springframework.beans.BeansException;
@@ -24,7 +23,7 @@ import org.springframework.context.ApplicationContextAware;
  * Provides access to the Spring ApplicationContext
  *
  * @author Suraj Muraleedharan
- * 
+ *
  */
 public class ApplicationContextProvider implements ApplicationContextAware {
 
@@ -32,4 +31,4 @@ public class ApplicationContextProvider implements ApplicationContextAware {
         // Wiring the ApplicationContext into a static method
         AppContext.setApplicationContext(ctx);
     }
-} 
+}

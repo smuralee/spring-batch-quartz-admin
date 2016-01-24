@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.batch.admin.web;
 
 import java.util.ArrayList;
@@ -77,9 +76,8 @@ public class QuartzController {
     /**
      * A collection of extensions that may be appended to request urls aimed at
      * this controller.
-     * 
-     * @param extensions
-     *            the extensions (e.g. [rss, xml, atom])
+     *
+     * @param extensions the extensions (e.g. [rss, xml, atom])
      */
     public void setExtensions(Collection<String> extensions) {
         this.extensions = new LinkedHashSet<String>(extensions);
@@ -94,8 +92,7 @@ public class QuartzController {
     }
 
     /**
-     * @param timeZone
-     *            the timeZone to set
+     * @param timeZone the timeZone to set
      */
     @Autowired(required = false)
     @Qualifier("userTimeZone")
@@ -107,7 +104,7 @@ public class QuartzController {
      * <p>
      * Displays the list of registered jobs on the Quartz menu page
      * </p>
-     * 
+     *
      * @param model
      * @param startJob
      * @param pageSize
@@ -136,7 +133,7 @@ public class QuartzController {
      * <p>
      * Displays the details page for each of the quartz jobs
      * </p>
-     * 
+     *
      * @param model
      * @param quartzJobName
      * @param errors
@@ -168,7 +165,7 @@ public class QuartzController {
             model.addAttribute("quartzJobInfo", new JobInfo(quartzJobName, count, launchable, jobService.isIncrementable(quartzJobName)));
 
         } catch (NoSuchJobException e) {
-            errors.reject("no.such.job", new Object[] { quartzJobName }, "There is no such job (" + HtmlUtils.htmlEscape(quartzJobName) + ")");
+            errors.reject("no.such.job", new Object[]{quartzJobName}, "There is no such job (" + HtmlUtils.htmlEscape(quartzJobName) + ")");
         }
 
         return "quartz/job";
@@ -178,7 +175,7 @@ public class QuartzController {
      * <p>
      * Schedules the job using the quartz
      * </p>
-     * 
+     *
      * @param model
      * @param quartzJobName
      * @param quartzScheduleRequest
@@ -204,22 +201,21 @@ public class QuartzController {
         }
 
         if (!errors.hasErrors()) {
-            
+
             // Fetching the parameters
             String params = quartzScheduleRequest.getQuartzJobParameters();
-            Map<String,Object> jobDataMap = Util.extractJobDataMap(quartzJobName, params);
-            
+            Map<String, Object> jobDataMap = Util.extractJobDataMap(quartzJobName, params);
+
             // Scheduling the batch job
             quartzService.scheduleBatchJob(quartzJobName, quartzScheduleRequest.getCronExpression(), jobDataMap);
-            
+
         }
 
         // Scheduling the job using Quartz
         if (!"quartzJob".equals(origin)) {
             // if the origin is not specified we are probably not a UI client
             return "jobs/execution";
-        }
-        else {
+        } else {
             // In the UI we show the same page again...
             return quartzJobDetails(model, quartzJobName, errors, 0, 20);
         }
@@ -228,5 +224,5 @@ public class QuartzController {
         // there's less of a pressing need for one (the browser history won't
         // contain the request).
     }
-    
+
 }

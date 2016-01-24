@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.batch.admin.web;
 
 import org.springframework.batch.admin.web.resources.BaseMenu;
@@ -22,8 +21,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class QuartzMenu extends BaseMenu {
 
-	public QuartzMenu() {
-		super("/quartz", "Quartz", 5);
-	}
+    public QuartzMenu() {
+        super("/quartz", "Quartz", 5);
+    }
 
 }

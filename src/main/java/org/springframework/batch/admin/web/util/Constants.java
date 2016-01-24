@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.batch.admin.web.util;
 
 /**
@@ -21,7 +20,7 @@ package org.springframework.batch.admin.web.util;
  *
  */
 public final class Constants {
-    
+
     /**
      * job parameters regex
      */
@@ -31,12 +30,12 @@ public final class Constants {
      * job name
      */
     public static final String JOB_NAME = "jobName";
-    
+
     /**
      * job run date
      */
     public static final String JOB_RUN_DATE = "jobRunDate";
-    
+
     /**
      * Quartz group
      */
@@ -46,11 +45,10 @@ public final class Constants {
      * Quartz trigger name suffix
      */
     public static final String TRIGGER_SUFFIX = "QuartzTrigger";
-    
+
     /**
-     * Bean names 
+     * Bean names
      */
     public static final String JOB_SERVICE_BEAN = "jobService";
     public static final String JOB_DATASTORE_BEAN = "batchDataStore";
 }
-

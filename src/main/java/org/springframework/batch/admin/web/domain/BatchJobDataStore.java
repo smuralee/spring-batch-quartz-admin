@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.batch.admin.web.domain;
 
 import java.io.Serializable;
@@ -24,17 +23,17 @@ import java.util.Map;
  * @author Suraj Muraleedharan
  *
  */
-public class BatchJobDataStore implements Serializable{
+public class BatchJobDataStore implements Serializable {
 
     /**
      * Serial version ID
      */
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * Stores the key value pair for the jobs
      */
-    private  Map<String,Map<String,Object>> jobDataMapStore = new HashMap<String, Map<String,Object>>();
+    private Map<String, Map<String, Object>> jobDataMapStore = new HashMap<String, Map<String, Object>>();
 
     /**
      * @return the jobDataMapStore
@@ -64,5 +63,5 @@ public class BatchJobDataStore implements Serializable{
         super();
         this.jobDataMapStore = jobDataMapStore;
     }
-    
+
 }

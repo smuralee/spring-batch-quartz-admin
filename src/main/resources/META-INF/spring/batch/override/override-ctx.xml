@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
 	http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd"
-	xmlns:batch="http://www.springframework.org/schema/batch">
+       xmlns:batch="http://www.springframework.org/schema/batch">
 	
-	<!-- Use this to set additional properties on beans at run time -->
-	<bean id="placeholderProperties"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>classpath:/org/springframework/batch/admin/bootstrap/batch.properties
-				</value>
-				<value>classpath:batch-default.properties</value>
-                                <value>classpath:batch-hsql.properties</value>
-                                <value>classpath:log4j.properties</value>
-			</list>
-		</property>
-		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
-		<property name="ignoreResourceNotFound" value="true" />
-		<property name="ignoreUnresolvablePlaceholders" value="false" />
-		<property name="order" value="1" />
-	</bean>
+    <!-- Use this to set additional properties on beans at run time -->
+    <bean id="placeholderProperties"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:/org/springframework/batch/admin/bootstrap/batch.properties
+                </value>
+                <value>classpath:batch-default.properties</value>
+                <value>classpath:batch-hsql.properties</value>
+                <value>classpath:log4j.properties</value>
+            </list>
+        </property>
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+        <property name="ignoreResourceNotFound" value="true" />
+        <property name="ignoreUnresolvablePlaceholders" value="false" />
+        <property name="order" value="1" />
+    </bean>
 	
-	<!-- Overrider job repository -->
-	<bean id="jobRepository"
-		class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean">
-		<property name="databaseType" value="hsql" />
-		<property name="dataSource" ref="dataSource" />
-		<property name="tablePrefix" value="${batch.table.prefix}" />
-		<property name="maxVarCharLength" value="2000" />
-		<property name="isolationLevelForCreate" value="ISOLATION_SERIALIZABLE" />
-		<property name="transactionManager" ref="transactionManager" />
-	</bean>
+    <!-- Overrider job repository -->
+    <bean id="jobRepository"
+          class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean">
+        <property name="databaseType" value="hsql" />
+        <property name="dataSource" ref="dataSource" />
+        <property name="tablePrefix" value="${batch.table.prefix}" />
+        <property name="maxVarCharLength" value="2000" />
+        <property name="isolationLevelForCreate" value="ISOLATION_SERIALIZABLE" />
+        <property name="transactionManager" ref="transactionManager" />
+    </bean>
 	
-	<!-- Override job service -->
-	<bean id="jobService" class="org.springframework.batch.admin.service.SimpleJobServiceFactoryBean">
-		<property name="tablePrefix" value="${batch.table.prefix}" />
-		<property name="jobRepository" ref="jobRepository" />
-		<property name="jobLauncher" ref="jobLauncher" />
-		<property name="jobLocator" ref="jobRegistry" />
-		<property name="dataSource" ref="dataSource" />
-	</bean>
+    <!-- Override job service -->
+    <bean id="jobService" class="org.springframework.batch.admin.service.SimpleJobServiceFactoryBean">
+        <property name="tablePrefix" value="${batch.table.prefix}" />
+        <property name="jobRepository" ref="jobRepository" />
+        <property name="jobLauncher" ref="jobLauncher" />
+        <property name="jobLocator" ref="jobRegistry" />
+        <property name="dataSource" ref="dataSource" />
+    </bean>
 
-	<!-- Override job explorer -->
-	<bean id="jobExplorer"
-		class="org.springframework.batch.core.explore.support.JobExplorerFactoryBean">
-		<property name="tablePrefix" value="${batch.table.prefix}" />
-		<property name="dataSource" ref="dataSource" />
-	</bean>
+    <!-- Override job explorer -->
+    <bean id="jobExplorer"
+          class="org.springframework.batch.core.explore.support.JobExplorerFactoryBean">
+        <property name="tablePrefix" value="${batch.table.prefix}" />
+        <property name="dataSource" ref="dataSource" />
+    </bean>
 
 </beans>

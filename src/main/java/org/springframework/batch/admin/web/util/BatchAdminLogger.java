@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.batch.admin.web.util;
 
 import org.slf4j.Logger;
@@ -25,7 +24,9 @@ import org.slf4j.LoggerFactory;
  */
 public class BatchAdminLogger {
 
-    /** The Constant LOG. */
+    /**
+     * The Constant LOG.
+     */
     private static final Logger LOG = LoggerFactory.getLogger(BatchAdminLogger.class);
 
     /**

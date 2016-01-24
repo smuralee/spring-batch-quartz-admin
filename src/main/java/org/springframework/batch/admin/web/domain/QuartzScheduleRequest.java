@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.batch.admin.web.domain;
 
 import java.io.Serializable;
@@ -52,8 +51,7 @@ public class QuartzScheduleRequest implements Serializable {
     }
 
     /**
-     * @param quartzJobName
-     *            the quartzJobName to set
+     * @param quartzJobName the quartzJobName to set
      */
     public void setQuartzJobName(String quartzJobName) {
         this.quartzJobName = quartzJobName;
@@ -67,8 +65,7 @@ public class QuartzScheduleRequest implements Serializable {
     }
 
     /**
-     * @param cronExpression
-     *            the cronExpression to set
+     * @param cronExpression the cronExpression to set
      */
     public void setCronExpression(String cronExpression) {
         this.cronExpression = cronExpression;
@@ -82,8 +79,7 @@ public class QuartzScheduleRequest implements Serializable {
     }
 
     /**
-     * @param quartzJobParameters
-     *            the quartzJobParameters to set
+     * @param quartzJobParameters the quartzJobParameters to set
      */
     public void setQuartzJobParameters(String quartzJobParameters) {
         this.quartzJobParameters = quartzJobParameters;

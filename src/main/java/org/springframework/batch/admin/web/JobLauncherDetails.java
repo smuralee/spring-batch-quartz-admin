@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.batch.admin.web;
 
 import java.util.Date;
@@ -51,16 +50,16 @@ public class JobLauncherDetails implements Job {
      * @see org.quartz.Job#execute(org.quartz.JobExecutionContext)
      */
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        
+
         jobService = (JobService) AppContext.getApplicationContext().getBean(Constants.JOB_SERVICE_BEAN);
-        
+
         String jobName = context.getJobDetail().getKey().getName();
 
         BatchJobDataStore batchJobDataStore = (BatchJobDataStore) AppContext.getApplicationContext().getBean(Constants.JOB_DATASTORE_BEAN);
         Map<String, Map<String, Object>> jobDataMapStore = batchJobDataStore.getJobDataMapStore();
         Map<String, Object> jobDataMap = jobDataMapStore.get(jobName);
         JobParameters jobParameters = getJobParametersFromJobMap(jobDataMap);
-        
+
         try {
             jobService.launch(jobName, jobParameters);
         } catch (NoSuchJobException e) {
@@ -74,8 +73,6 @@ public class JobLauncherDetails implements Job {
         } catch (JobParametersInvalidException e) {
             BatchAdminLogger.getLogger().error(e.getMessage(), e);
         }
-        
-       
 
     }
 
@@ -108,5 +105,4 @@ public class JobLauncherDetails implements Job {
 
     }
 
-    
 }
