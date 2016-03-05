@@ -20,7 +20,7 @@ limitations under the License.
     <artifactId>spring-batch-quartz-admin</artifactId>
     <packaging>war</packaging>
     <version>0.0.1-SNAPSHOT</version>
-    <name>spring-batch-quartz-admin Maven Webapp</name>
+    <name>spring-batch-quartz-admin</name>
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
