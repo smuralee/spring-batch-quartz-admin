@@ -44,6 +44,11 @@ public class QuartzScheduleRequest implements Serializable {
     private String quartzJobParameters;
 
     /**
+     * Stores the action of the form submission
+     */
+    private String action;
+
+    /**
      * @return the quartzJobName
      */
     public String getQuartzJobName() {
@@ -86,6 +91,20 @@ public class QuartzScheduleRequest implements Serializable {
     }
 
     /**
+     * @return the action
+     */
+    public String getAction() {
+        return action;
+    }
+
+    /**
+     * @param action the action to set
+     */
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    /**
      * Default constructor
      */
     public QuartzScheduleRequest() {
@@ -95,32 +114,31 @@ public class QuartzScheduleRequest implements Serializable {
      * @param quartzJobName
      * @param cronExpression
      * @param quartzJobParameters
+     * @param action
      */
-    public QuartzScheduleRequest(String quartzJobName, String cronExpression, String quartzJobParameters) {
+    public QuartzScheduleRequest(String quartzJobName, String cronExpression, String quartzJobParameters, String action) {
         this.quartzJobName = quartzJobName;
         this.cronExpression = cronExpression;
         this.quartzJobParameters = quartzJobParameters;
+        this.action = action;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
+    /* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((action == null) ? 0 : action.hashCode());
         result = prime * result + ((cronExpression == null) ? 0 : cronExpression.hashCode());
         result = prime * result + ((quartzJobName == null) ? 0 : quartzJobName.hashCode());
         result = prime * result + ((quartzJobParameters == null) ? 0 : quartzJobParameters.hashCode());
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
+    /* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object obj) {
@@ -134,6 +152,13 @@ public class QuartzScheduleRequest implements Serializable {
             return false;
         }
         QuartzScheduleRequest other = (QuartzScheduleRequest) obj;
+        if (action == null) {
+            if (other.action != null) {
+                return false;
+            }
+        } else if (!action.equals(other.action)) {
+            return false;
+        }
         if (cronExpression == null) {
             if (other.cronExpression != null) {
                 return false;

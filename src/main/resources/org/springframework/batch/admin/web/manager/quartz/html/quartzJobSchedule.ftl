@@ -10,6 +10,20 @@
 		</#if>
 		
 		<!-- CRON Expression -->
+                <ol>
+			<li>
+			<label for="jobSchedule">Job Schedule Status</label>
+			<span class="message"><#if jobMessageStatus??>${jobMessageStatus}</#if></span>
+			</li>
+		</ol>
+
+		<ol>
+			<li>
+			<label for="jobSchedule">Job Schedule Description</label>
+			<span class="message"><#if jobMessageDescription??>${jobMessageDescription}</#if></span>
+			</li>
+		</ol>
+
 		<ol>
 			<li>
 			<label for="cronExpression">Cron Expression</label>
@@ -36,8 +50,9 @@
 		<!-- Scheduling the cron -->
 		<ol>
 			<li>
-				<label for="Schedule">Job name=${quartzJobInfo.name}</label>
-				<input id="Schedule" type="submit" value="Schedule" name="Schedule" />
+				<label for="Schedule">Action</label>
+				<input id="Schedule" type="submit" name="action" value="Schedule"  />
+				<input id="Un-Schedule" type="submit" name="action" value="Un-Schedule" />
 			</li>
 		</ol>
 

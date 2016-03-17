@@ -74,8 +74,7 @@ public class QuartzController {
     private JobParametersExtractor jobParametersExtractor = new JobParametersExtractor();
 
     /**
-     * A collection of extensions that may be appended to request urls aimed at
-     * this controller.
+     * A collection of extensions that may be appended to request urls aimed at this controller.
      *
      * @param extensions the extensions (e.g. [rss, xml, atom])
      */
@@ -163,6 +162,8 @@ public class QuartzController {
             TableUtils.addPagination(model, total, startJobInstance, pageSize, "QuartzJobInstance");
             int count = jobService.countJobExecutionsForJob(quartzJobName);
             model.addAttribute("quartzJobInfo", new JobInfo(quartzJobName, count, launchable, jobService.isIncrementable(quartzJobName)));
+            model.addAttribute("jobMessageStatus", quartzService.getScheduledJobStatus(quartzJobName));
+            model.addAttribute("jobMessageDescription", quartzService.getScheduledJobDescription(quartzJobName));
 
         } catch (NoSuchJobException e) {
             errors.reject("no.such.job", new Object[]{quartzJobName}, "There is no such job (" + HtmlUtils.htmlEscape(quartzJobName) + ")");
@@ -187,28 +188,35 @@ public class QuartzController {
     public String scheduleQuartzJob(ModelMap model, @ModelAttribute("quartzJobName") String quartzJobName, @ModelAttribute("quartzScheduleRequest") QuartzScheduleRequest quartzScheduleRequest,
             Errors errors, @RequestParam(defaultValue = "execution") String origin) {
 
-        // Setting the job name
-        quartzScheduleRequest.setQuartzJobName(quartzJobName);
+        if (Constants.ACTION_SCHEDULE.equalsIgnoreCase(quartzScheduleRequest.getAction())) {
 
-        // Validate the cron expression
-        if (!CronExpression.isValidExpression(quartzScheduleRequest.getCronExpression())) {
-            errors.reject("invalid.cron.expression", "Please enter a valid cron expression.i.e. * * * * * ? ");
-        }
+            // Setting the job name
+            quartzScheduleRequest.setQuartzJobName(quartzJobName);
 
-        // Validate the job parameters
-        if (StringUtils.isNotBlank(quartzScheduleRequest.getQuartzJobParameters()) && (!Util.isValidRegExp(Constants.JOB_PARAMETERS_REGEX, quartzScheduleRequest.getQuartzJobParameters()))) {
-            errors.reject("invalid.job.parameters", "Invalid Job Parameters (use comma or new-line separator)");
-        }
+            // Validate the cron expression
+            if (!CronExpression.isValidExpression(quartzScheduleRequest.getCronExpression())) {
+                errors.reject("invalid.cron.expression", "Please enter a valid cron expression.i.e. * * * * * ? ");
+            }
 
-        if (!errors.hasErrors()) {
+            // Validate the job parameters
+            if (StringUtils.isNotBlank(quartzScheduleRequest.getQuartzJobParameters()) && (!Util.isValidRegExp(Constants.JOB_PARAMETERS_REGEX, quartzScheduleRequest.getQuartzJobParameters()))) {
+                errors.reject("invalid.job.parameters", "Invalid Job Parameters (use comma or new-line separator)");
+            }
 
-            // Fetching the parameters
-            String params = quartzScheduleRequest.getQuartzJobParameters();
-            Map<String, Object> jobDataMap = Util.extractJobDataMap(quartzJobName, params);
+            if (!errors.hasErrors()) {
 
-            // Scheduling the batch job
-            quartzService.scheduleBatchJob(quartzJobName, quartzScheduleRequest.getCronExpression(), jobDataMap);
+                // Fetching the parameters
+                String params = quartzScheduleRequest.getQuartzJobParameters();
+                Map<String, Object> jobDataMap = Util.extractJobDataMap(quartzJobName, params);
 
+                // Scheduling the batch job
+                quartzService.scheduleBatchJob(quartzJobName, quartzScheduleRequest.getCronExpression(), jobDataMap);
+
+            }
+        } else if (Constants.ACTION_UNSCHEDULE.equalsIgnoreCase(quartzScheduleRequest.getAction())) {
+
+            // Un-schedule the batch job
+            quartzService.unScheduleBatchJob(quartzJobName);
         }
 
         // Scheduling the job using Quartz

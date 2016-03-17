@@ -15,15 +15,23 @@
  */
 package org.springframework.batch.admin.service.impl;
 
+import com.cronutils.descriptor.CronDescriptor;
+import static com.cronutils.model.CronType.QUARTZ;
+import com.cronutils.model.definition.CronDefinitionBuilder;
+import com.cronutils.parser.CronParser;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.quartz.CronScheduleBuilder;
+import org.quartz.CronTrigger;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
+import org.quartz.TriggerKey;
 import org.springframework.batch.admin.service.QuartzService;
 import org.springframework.batch.admin.web.JobLauncherDetails;
 import org.springframework.batch.admin.web.domain.BatchJobDataStore;
@@ -49,6 +57,8 @@ public class QuartzServiceImpl implements QuartzService {
 
     /**
      * Parameterized constructor
+     *
+     * @param quartzScheduler
      */
     @Autowired
     public QuartzServiceImpl(SchedulerFactoryBean quartzScheduler) {
@@ -56,12 +66,11 @@ public class QuartzServiceImpl implements QuartzService {
         this.quartzScheduler = quartzScheduler;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.springframework.batch.admin.service.QuartzService#scheduleBatchJob
-     * (java.lang.String, java.lang.String, Map<String,Object>)
+    /**
+     *
+     * @param jobName
+     * @param cronExpression
+     * @param jobDataMap
      */
     public void scheduleBatchJob(String jobName, String cronExpression, Map<String, Object> jobDataMap) {
 
@@ -86,6 +95,72 @@ public class QuartzServiceImpl implements QuartzService {
             quartzScheduler.getScheduler().scheduleJob(jobDetail, trigger);
 
             BatchAdminLogger.getLogger().info("Job is scheduled");
+        } catch (SchedulerException e) {
+            BatchAdminLogger.getLogger().error(e.getMessage(), e);
+        }
+    }
+
+    /**
+     *
+     * @param jobName
+     * @return String
+     */
+    public String getScheduledJobDescription(String jobName) {
+        String message = Constants.JOB_IS_NOT_SCHEDULED;
+        JobKey jobKey = new JobKey(jobName, Constants.QUARTZ_GROUP);
+        try {
+            JobDetail jobDetail = quartzScheduler.getScheduler().getJobDetail(jobKey);
+            if (null != jobDetail) {
+                List<? extends Trigger> triggersOfJob = quartzScheduler.getScheduler().getTriggersOfJob(jobKey);
+                if (null != triggersOfJob && !triggersOfJob.isEmpty()) {
+                    CronTrigger trigger = (CronTrigger) triggersOfJob.get(0);
+                    String cronExpression = trigger.getCronExpression();
+                    CronDescriptor descriptor = CronDescriptor.instance(Locale.US);
+                    CronParser parser = new CronParser(CronDefinitionBuilder.instanceDefinitionFor(QUARTZ));
+                    message = descriptor.describe(parser.parse(cronExpression));
+                }
+
+            }
+        } catch (SchedulerException e) {
+            BatchAdminLogger.getLogger().error(e.getMessage(), e);
+        }
+        return message;
+    }
+
+    /**
+     *
+     * @param jobName
+     * @return String
+     */
+    public String getScheduledJobStatus(String jobName) {
+        String returnVal = Constants.JOB_IS_NOT_SCHEDULED;
+        JobKey jobKey = new JobKey(jobName, Constants.QUARTZ_GROUP);
+
+        try {
+            JobDetail jobDetail = quartzScheduler.getScheduler().getJobDetail(jobKey);
+            if (null != jobDetail) {
+
+                returnVal = Constants.JOB_IS_SCHEDULED;
+            }
+        } catch (SchedulerException e) {
+            BatchAdminLogger.getLogger().error(e.getMessage(), e);
+        }
+
+        return returnVal;
+    }
+
+    /**
+     *
+     * @param jobName
+     */
+    public void unScheduleBatchJob(String jobName) {
+        // Delete job, if existing
+        JobKey jobKey = new JobKey(jobName, Constants.QUARTZ_GROUP);
+        try {
+            JobDetail jobDetail = quartzScheduler.getScheduler().getJobDetail(jobKey);
+            if (null != jobDetail) {
+                quartzScheduler.getScheduler().deleteJob(jobKey);
+            }
         } catch (SchedulerException e) {
             BatchAdminLogger.getLogger().error(e.getMessage(), e);
         }

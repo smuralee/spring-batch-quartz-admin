@@ -51,4 +51,17 @@ public final class Constants {
      */
     public static final String JOB_SERVICE_BEAN = "jobService";
     public static final String JOB_DATASTORE_BEAN = "batchDataStore";
+    
+     /**
+     * Messages
+     */
+    public static final String JOB_IS_NOT_SCHEDULED = "Not Scheduled";
+    public static final String JOB_IS_SCHEDULED = "Scheduled";
+    
+    /**
+     * Action
+     */
+    public static final String ACTION_SCHEDULE = "Schedule";
+    public static final String ACTION_UNSCHEDULE = "Un-Schedule";
+    
 }

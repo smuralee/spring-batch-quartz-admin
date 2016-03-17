@@ -18,8 +18,7 @@ package org.springframework.batch.admin.service;
 import java.util.Map;
 
 /**
- * Interface for general purpose monitoring of the Quartz scheduling of spring
- * batch
+ * Interface for general purpose monitoring of the Quartz scheduling of spring batch
  *
  * @author Suraj Muraleedharan
  *
@@ -36,5 +35,35 @@ public interface QuartzService {
      * @param jobDataMap
      */
     void scheduleBatchJob(String jobName, String cronExpression, Map<String, Object> jobDataMap);
+
+    /**
+     * <p>
+     * Returns the schedule description, if the job is scheduled. If no job is found, returns
+     * default string - "This job is not scheduled"
+     * </p>
+     *
+     * @param jobName
+     * @return
+     */
+    String getScheduledJobDescription(String jobName);
+
+    /**
+     * <p>
+     * Returns "Scheduled", if the job is scheduled
+     * </p>
+     *
+     * @param jobName
+     * @return boolean
+     */
+    String getScheduledJobStatus(String jobName);
+
+    /**
+     * <p>
+     * Un-schedules the batch job from the quartz controller
+     * </p>
+     *
+     * @param jobName
+     */
+    void unScheduleBatchJob(String jobName);
 
 }
