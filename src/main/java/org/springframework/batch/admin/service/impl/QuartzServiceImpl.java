@@ -15,10 +15,8 @@
  */
 package org.springframework.batch.admin.service.impl;
 
-import com.cronutils.descriptor.CronDescriptor;
 import static com.cronutils.model.CronType.QUARTZ;
-import com.cronutils.model.definition.CronDefinitionBuilder;
-import com.cronutils.parser.CronParser;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -31,7 +29,6 @@ import org.quartz.JobKey;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
-import org.quartz.TriggerKey;
 import org.springframework.batch.admin.service.QuartzService;
 import org.springframework.batch.admin.web.JobLauncherDetails;
 import org.springframework.batch.admin.web.domain.BatchJobDataStore;
@@ -41,6 +38,10 @@ import org.springframework.batch.admin.web.util.Constants;
 import org.springframework.batch.admin.web.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
+
+import com.cronutils.descriptor.CronDescriptor;
+import com.cronutils.model.definition.CronDefinitionBuilder;
+import com.cronutils.parser.CronParser;
 
 /**
  * Implementation of the {@link QuartzService}
