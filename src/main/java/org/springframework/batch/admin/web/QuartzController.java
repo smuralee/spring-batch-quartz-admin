@@ -15,27 +15,17 @@
  */
 package org.springframework.batch.admin.web;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
-
 import org.apache.commons.lang.StringUtils;
 import org.quartz.CronExpression;
 import org.springframework.batch.admin.service.JobService;
-import org.springframework.batch.admin.service.QuartzService;
 import org.springframework.batch.admin.web.domain.QuartzScheduleRequest;
+import org.springframework.batch.admin.web.service.QuartzService;
 import org.springframework.batch.admin.web.util.Constants;
 import org.springframework.batch.admin.web.util.Util;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.launch.NoSuchJobException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
@@ -45,18 +35,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.HtmlUtils;
 
+import java.util.*;
+
 @Controller
 public class QuartzController {
 
     /**
      * Quartz service instance
      */
-    private final QuartzService quartzService;
+    @Autowired
+    private QuartzService quartzService;
 
     /**
      * Job service instance
      */
-    private final JobService jobService;
+    @Autowired
+    private JobService jobService;
 
     /**
      * Timezone
@@ -73,6 +67,10 @@ public class QuartzController {
      */
     private JobParametersExtractor jobParametersExtractor = new JobParametersExtractor();
 
+    public QuartzController() {
+        extensions.addAll(Arrays.asList(".html", ".json", ".rss"));
+    }
+
     /**
      * A collection of extensions that may be appended to request urls aimed at this controller.
      *
@@ -82,19 +80,6 @@ public class QuartzController {
         this.extensions = new LinkedHashSet<String>(extensions);
     }
 
-    @Autowired
-    public QuartzController(JobService jobService, QuartzService quartzService) {
-        super();
-        this.jobService = jobService;
-        this.quartzService = quartzService;
-        extensions.addAll(Arrays.asList(".html", ".json", ".rss"));
-    }
-
-    /**
-     * @param timeZone the timeZone to set
-     */
-    @Autowired(required = false)
-    @Qualifier("userTimeZone")
     public void setTimeZone(TimeZone timeZone) {
         this.timeZone = timeZone;
     }
@@ -142,7 +127,7 @@ public class QuartzController {
      */
     @RequestMapping(value = "/quartz/{quartzJobName}", method = RequestMethod.GET)
     public String quartzJobDetails(ModelMap model, @ModelAttribute("quartzJobName") String quartzJobName, Errors errors, @RequestParam(defaultValue = "0") int startJobInstance,
-            @RequestParam(defaultValue = "20") int pageSize) {
+                                   @RequestParam(defaultValue = "20") int pageSize) {
 
         boolean launchable = jobService.isLaunchable(quartzJobName);
 
@@ -186,7 +171,7 @@ public class QuartzController {
      */
     @RequestMapping(value = "/quartz/{quartzJobName}", method = RequestMethod.POST)
     public String scheduleQuartzJob(ModelMap model, @ModelAttribute("quartzJobName") String quartzJobName, @ModelAttribute("quartzScheduleRequest") QuartzScheduleRequest quartzScheduleRequest,
-            Errors errors, @RequestParam(defaultValue = "execution") String origin) {
+                                    Errors errors, @RequestParam(defaultValue = "execution") String origin) {
 
         if (Constants.ACTION_SCHEDULE.equalsIgnoreCase(quartzScheduleRequest.getAction())) {
 
@@ -233,4 +218,11 @@ public class QuartzController {
         // contain the request).
     }
 
+    public void setQuartzService(QuartzService quartzService) {
+        this.quartzService = quartzService;
+    }
+
+    public void setJobService(JobService jobService) {
+        this.jobService = jobService;
+    }
 }

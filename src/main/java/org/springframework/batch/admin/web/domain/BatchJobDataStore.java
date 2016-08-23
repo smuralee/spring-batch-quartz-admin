@@ -15,6 +15,8 @@
  */
 package org.springframework.batch.admin.web.domain;
 
+import org.springframework.stereotype.Component;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +25,7 @@ import java.util.Map;
  * @author Suraj Muraleedharan
  *
  */
+@Component
 public class BatchJobDataStore implements Serializable {
 
     /**
@@ -36,20 +39,6 @@ public class BatchJobDataStore implements Serializable {
     private Map<String, Map<String, Object>> jobDataMapStore = new HashMap<String, Map<String, Object>>();
 
     /**
-     * @return the jobDataMapStore
-     */
-    public Map<String, Map<String, Object>> getJobDataMapStore() {
-        return jobDataMapStore;
-    }
-
-    /**
-     * @param jobDataMapStore the jobDataMapStore to set
-     */
-    public void setJobDataMapStore(Map<String, Map<String, Object>> jobDataMapStore) {
-        this.jobDataMapStore = jobDataMapStore;
-    }
-
-    /**
      * Default constructor
      */
     public BatchJobDataStore() {
@@ -61,6 +50,20 @@ public class BatchJobDataStore implements Serializable {
      */
     public BatchJobDataStore(Map<String, Map<String, Object>> jobDataMapStore) {
         super();
+        this.jobDataMapStore = jobDataMapStore;
+    }
+
+    /**
+     * @return the jobDataMapStore
+     */
+    public Map<String, Map<String, Object>> getJobDataMapStore() {
+        return jobDataMapStore;
+    }
+
+    /**
+     * @param jobDataMapStore the jobDataMapStore to set
+     */
+    public void setJobDataMapStore(Map<String, Map<String, Object>> jobDataMapStore) {
         this.jobDataMapStore = jobDataMapStore;
     }
 

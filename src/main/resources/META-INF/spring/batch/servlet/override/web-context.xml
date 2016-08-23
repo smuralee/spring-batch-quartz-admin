@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                                  http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <!-- Quartz menu bean -->
     <bean id="quartzMenu" class="org.springframework.batch.admin.web.QuartzMenu" parent="baseMenu"/>
 
     <bean name="quartz" parent="standard">
@@ -33,19 +34,19 @@
         </property>
     </bean>
 
+    <!-- Scheduler factory bean -->
+    <bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"/>
+
     <!-- Application context provider -->
-    <bean id="contextApplicationContextProvider"
-          class="org.springframework.batch.admin.web.util.ApplicationContextProvider"/>
+    <bean id="applicationContextProvider" class="org.springframework.batch.admin.web.util.ApplicationContextProvider"/>
 
     <!-- Quartz controller -->
     <bean id="quartzController" class="org.springframework.batch.admin.web.QuartzController"/>
 
     <!-- Quartz service -->
-    <bean id="quartzService" class="org.springframework.batch.admin.service.impl.QuartzServiceImpl"/>
-
-    <!-- Scheduler factory bean -->
-    <bean id="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"/>
+    <bean id="quartzService" class="org.springframework.batch.admin.web.service.impl.QuartzServiceImpl"/>
 
     <!-- Bean for storing the job data -->
     <bean id="batchDataStore" class="org.springframework.batch.admin.web.domain.BatchJobDataStore"/>
+
 </beans>
