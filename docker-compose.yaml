@@ -1,0 +1,11 @@
+version: "3"
+services:
+  spring-batch-admin:
+    container_name: spring-batch-admin
+    build:
+      context: .
+    image: smuralee/spring-batch-admin:latest
+    volumes:
+      - /tmp:/usr/local/batch-config
+    ports:
+      - 9001:8080
