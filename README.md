@@ -1,4 +1,8 @@
-# Spring batch admin with quartz implementation
+# Spring Batch Admin EOL
+
+Spring Batch Admin has reached their end of life and not recommended for new projects. Spring Cloud Data Flow is the recommended replacement for managing and monitoring Spring Batch jobs going forward. You can read more about migrating to Spring Cloud Data Flow here
+
+# Spring Batch Admin with Quartz implementation
 
 This project incorporates the [Quartz](https://quartz-scheduler.org/) scheduler along with the Spring Batch admin. A new page "Quartz" is setup for accepting the CRON expression for the scheduling of the application.
 
