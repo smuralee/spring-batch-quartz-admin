@@ -1,6 +1,6 @@
 # Spring Batch Admin EOL
 
-Spring Batch Admin has reached their end of life and not recommended for new projects. Spring Cloud Data Flow is the recommended replacement for managing and monitoring Spring Batch jobs going forward. You can read more about migrating to Spring Cloud Data Flow here
+[Spring Batch Admin](https://github.com/spring-attic/spring-batch-admin) has reached their end of life and not recommended for new projects. [Spring Cloud Data Flow](https://spring.io/projects/spring-cloud-dataflow) is the recommended replacement for managing and monitoring [Spring Batch](https://spring.io/projects/spring-batch/) jobs going forward. You can read more about migrating to Spring Cloud Data Flow [here](https://github.com/spring-attic/spring-batch-admin/blob/master/MIGRATION.md).
 
 # Spring Batch Admin with Quartz implementation
 
